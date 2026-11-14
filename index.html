@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="en" data-theme="system">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="DocTake turns camera photographs and image files into organized, enhanced PDF documents. Runs locally in your browser.">
+  <meta name="theme-color" content="#f4f6fb">
+  <title>DocTake — Photo to PDF</title>
+  <style>
+    :root{color-scheme:light;--bg:#f4f6fb;--surface:#fff;--surface-2:#f8f9fd;--text:#182033;--muted:#647089;--line:#e1e6f0;--accent:#3658d4;--accent-2:#2444b5;--accent-soft:#eaf0ff;--danger:#b42318;--success:#147d52;--shadow:0 14px 40px rgba(25,42,88,.08);--radius:18px;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    [data-theme="dark"]{color-scheme:dark;--bg:#111522;--surface:#1b2232;--surface-2:#232c3e;--text:#edf1fa;--muted:#aab4c8;--line:#354057;--accent:#91a8ff;--accent-2:#b4c3ff;--accent-soft:#29365b;--danger:#ff8a80;--success:#5dd6a1;--shadow:0 16px 45px rgba(0,0,0,.25)}
+    @media(prefers-color-scheme:dark){[data-theme="system"]{color-scheme:dark;--bg:#111522;--surface:#1b2232;--surface-2:#232c3e;--text:#edf1fa;--muted:#aab4c8;--line:#354057;--accent:#91a8ff;--accent-2:#b4c3ff;--accent-soft:#29365b;--danger:#ff8a80;--success:#5dd6a1;--shadow:0 16px 45px rgba(0,0,0,.25)}}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);min-height:100vh}button,input,select{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.48}a{color:var(--accent)}.app{max-width:1500px;margin:auto;padding:22px clamp(14px,3vw,34px) 36px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:22px}.brand{display:flex;align-items:center;gap:12px}.logo{width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,#4669e9,#7a8ff1);display:grid;place-items:center;color:white;font-weight:850;font-size:21px;box-shadow:0 8px 18px #3658d433}.brand h1{font-size:22px;margin:0;letter-spacing:-.04em}.brand p{margin:3px 0 0;color:var(--muted);font-size:12px}.top-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.select,.button,.icon-button{border:1px solid var(--line);border-radius:11px;background:var(--surface);color:var(--text);padding:10px 13px}.select{min-height:40px}.button{font-weight:650;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform .16s,background .16s,border-color .16s}.button:hover:not(:disabled){transform:translateY(-1px);border-color:var(--accent)}.button.primary{background:var(--accent);border-color:var(--accent);color:white}.button.primary:hover{background:var(--accent-2)}.button.soft{background:var(--accent-soft);color:var(--accent);border-color:transparent}.button.danger{color:var(--danger)}.button.small{padding:7px 9px;font-size:12px}.icon-button{width:40px;height:40px;padding:0;display:grid;place-items:center;font-size:17px}.statusline{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:13px;margin:0 0 16px;min-height:22px}.status-dot{width:8px;height:8px;border-radius:50%;background:var(--success);flex:none}.layout{display:grid;grid-template-columns:minmax(285px,350px) minmax(0,1fr);gap:18px;align-items:start}.sidebar{display:grid;gap:14px}.panel,.workspace-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}.panel{padding:17px}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:13px}.panel h2,.workspace-card h2{font-size:15px;margin:0;letter-spacing:-.015em}.eyebrow{font-size:10px;text-transform:uppercase;letter-spacing:.11em;color:var(--muted);font-weight:800}.subtle{font-size:12px;color:var(--muted);line-height:1.55}.action-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.drop-zone{margin-top:10px;border:1.5px dashed var(--line);border-radius:14px;padding:15px 10px;text-align:center;background:var(--surface-2);transition:border-color .2s,background .2s}.drop-zone.drag{border-color:var(--accent);background:var(--accent-soft)}.drop-icon{font-size:25px;margin-bottom:6px}.drop-zone strong{display:block;font-size:13px}.drop-zone span{font-size:11px;color:var(--muted)}.control{display:grid;gap:7px;margin:11px 0}.control label{display:flex;justify-content:space-between;gap:8px;font-size:12px;color:var(--muted);font-weight:650}.control output{color:var(--text);font-variant-numeric:tabular-nums}.control input[type=range]{width:100%;accent-color:var(--accent)}.control input[type=text],.control input[type=number],.control select{width:100%;background:var(--surface-2);color:var(--text);border:1px solid var(--line);border-radius:9px;padding:9px 10px;min-height:38px}.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px}.check-row{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);margin:10px 0}.check-row input{accent-color:var(--accent)}.maincol{display:grid;gap:16px;min-width:0}.workspace-card{padding:17px;min-width:0}.preview-top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}.preview-tools{display:flex;gap:7px;flex-wrap:wrap}.preview-stage{min-height:360px;display:grid;place-items:center;padding:18px;border-radius:14px;background:linear-gradient(45deg,var(--surface-2) 25%,transparent 25%,transparent 75%,var(--surface-2) 75%),linear-gradient(45deg,var(--surface-2) 25%,transparent 25%,transparent 75%,var(--surface-2) 75%);background-position:0 0,10px 10px;background-size:20px 20px;overflow:hidden}.preview-stage canvas{display:block;max-width:100%;max-height:68vh;width:auto;height:auto;object-fit:contain;border-radius:4px;box-shadow:0 10px 30px rgba(0,0,0,.18);background:white}.empty-state{max-width:340px;text-align:center;color:var(--muted);padding:42px 15px}.empty-state .big{font-size:48px;margin-bottom:8px}.empty-state strong{display:block;color:var(--text);font-size:16px;margin-bottom:5px}.pages-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}.pages-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:10px}.page-card{border:1px solid var(--line);border-radius:12px;padding:8px;background:var(--surface-2);min-width:0;position:relative}.page-card.selected{border:2px solid var(--accent);padding:7px;background:var(--accent-soft)}.page-select{display:block;width:100%;padding:0;border:0;background:transparent;color:inherit;text-align:left;cursor:pointer}.page-select:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:7px}.thumb-wrap{height:105px;display:grid;place-items:center;background:#e8eaf0;border-radius:7px;overflow:hidden}.thumb-wrap canvas{max-height:100%;max-width:100%;object-fit:contain}.page-name{font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:7px 0 6px;color:var(--text)}.page-controls{display:flex;gap:4px}.page-controls button{flex:1;padding:5px 2px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--muted);font-size:10px}.page-controls button:hover{border-color:var(--accent);color:var(--accent)}.page-count{font-size:12px;color:var(--muted)}.pdf-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.pdf-actions .subtle{max-width:450px}.pdf-preview{margin-top:13px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface-2)}.pdf-preview iframe{width:100%;height:510px;border:0;display:block}.hidden{display:none!important}.camera-dialog{border:1px solid var(--line);border-radius:18px;padding:0;background:var(--surface);color:var(--text);width:min(760px,calc(100% - 24px));max-width:760px;box-shadow:var(--shadow)}.camera-dialog::backdrop{background:#080d1acc;backdrop-filter:blur(4px)}.dialog-head{display:flex;justify-content:space-between;align-items:center;padding:15px 17px;border-bottom:1px solid var(--line)}.camera-content{padding:14px}.camera-content video{width:100%;max-height:62vh;background:#080d18;border-radius:12px;object-fit:contain}.camera-actions{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:12px}.integration-grid{display:grid;grid-template-columns:1fr auto;gap:8px}.integration-grid select{min-width:0}.integration-frame{width:100%;height:230px;border:1px solid var(--line);border-radius:10px;background:#fff;margin-top:10px}.integration-note{font-size:11px;color:var(--muted);line-height:1.5;margin-top:8px}.footer{margin-top:20px;text-align:center;font-size:11px;color:var(--muted)}.pill{display:inline-flex;align-items:center;border-radius:99px;padding:4px 8px;background:var(--accent-soft);color:var(--accent);font-size:10px;font-weight:750}.kbd{font:11px ui-monospace,monospace;border:1px solid var(--line);border-radius:5px;padding:2px 5px;color:var(--muted)}
+    @media(max-width:900px){.layout{grid-template-columns:1fr}.sidebar{grid-template-columns:repeat(2,minmax(0,1fr))}.maincol{grid-row:1}.preview-stage{min-height:300px}}
+    @media(max-width:600px){.app{padding:14px 11px 25px}.topbar{align-items:flex-start}.brand p{display:none}.top-actions{justify-content:flex-end}.top-actions .select{max-width:120px;padding:8px}.sidebar{grid-template-columns:1fr}.preview-top{align-items:flex-start;flex-direction:column}.preview-stage{min-height:250px;padding:10px}.preview-stage canvas{max-height:52vh}.pages-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.pdf-preview iframe{height:390px}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand"><div class="logo" aria-hidden="true">D</div><div><h1>DocTake</h1><p data-i18n="tagline">Scan, enhance, and export — right in your browser</p></div></div>
+    <div class="top-actions">
+      <select class="select" id="language" aria-label="Language"><option value="en">English</option><option value="ja">日本語</option></select>
+      <select class="select" id="theme" aria-label="Theme"><option value="system" data-i18n="themeSystem">System</option><option value="light" data-i18n="themeLight">Light</option><option value="dark" data-i18n="themeDark">Dark</option></select>
+      <button class="icon-button" id="helpButton" type="button" title="Help" aria-label="Help">?</button>
+    </div>
+  </header>
+  <p class="statusline" role="status" aria-live="polite"><span class="status-dot" id="statusDot"></span><span id="statusText">Ready. Add photos to get started.</span></p>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <section class="panel">
+        <div class="panel-head"><h2 data-i18n="captureHeading">1. Add pages</h2><span class="pill" data-i18n="localBadge">Local processing</span></div>
+        <div class="action-grid">
+          <button class="button primary" id="openCamera" type="button"><span>▣</span><span data-i18n="camera">Use camera</span></button>
+          <button class="button" id="chooseFiles" type="button"><span>＋</span><span data-i18n="chooseImages">Choose images</span></button>
+        </div>
+        <input id="fileInput" type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" multiple hidden>
+        <div id="dropZone" class="drop-zone" tabindex="0" role="button" aria-label="Drop or choose image files"><div class="drop-icon">▧</div><strong data-i18n="dropTitle">Drop photos here</strong><span data-i18n="dropHint">JPG, PNG, WebP · up to 25 MB each</span></div>
+        <p class="subtle" data-i18n="captureHelp">Capture several pages or import existing photos. Images stay in this browser tab.</p>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head"><h2 data-i18n="editHeading">2. Enhance selected page</h2><span class="eyebrow" id="selectedLabel">—</span></div>
+        <button class="button soft" id="autoDetect" type="button" style="width:100%" disabled>✧ <span data-i18n="autoDetect">Detect & straighten document</span></button>
+        <div class="two-col" style="margin-top:9px">
+          <button class="button" id="rotateLeft" type="button" disabled>↶ <span data-i18n="rotateLeft">Rotate left</span></button>
+          <button class="button" id="rotateRight" type="button" disabled>↷ <span data-i18n="rotateRight">Rotate right</span></button>
+        </div>
+        <div class="eyebrow" style="margin-top:16px" data-i18n="cropHeading">Manual crop · trim from edges</div>
+        <div class="control"><label for="cropLeft"><span data-i18n="left">Left</span><output id="cropLeftOut">0%</output></label><input id="cropLeft" type="range" min="0" max="35" value="0" disabled></div>
+        <div class="control"><label for="cropRight"><span data-i18n="right">Right</span><output id="cropRightOut">0%</output></label><input id="cropRight" type="range" min="0" max="35" value="0" disabled></div>
+        <div class="control"><label for="cropTop"><span data-i18n="top">Top</span><output id="cropTopOut">0%</output></label><input id="cropTop" type="range" min="0" max="35" value="0" disabled></div>
+        <div class="control"><label for="cropBottom"><span data-i18n="bottom">Bottom</span><output id="cropBottomOut">0%</output></label><input id="cropBottom" type="range" min="0" max="35" value="0" disabled></div>
+        <div class="eyebrow" style="margin-top:14px" data-i18n="imageHeading">Image adjustments</div>
+        <div class="control"><label for="brightness"><span data-i18n="brightness">Brightness</span><output id="brightnessOut">100%</output></label><input id="brightness" type="range" min="50" max="160" value="100" disabled></div>
+        <div class="control"><label for="contrast"><span data-i18n="contrast">Contrast</span><output id="contrastOut">110%</output></label><input id="contrast" type="range" min="50" max="200" value="110" disabled></div>
+        <div class="control"><label for="grayscale"><span data-i18n="grayscale">Grayscale mix</span><output id="grayscaleOut">0%</output></label><input id="grayscale" type="range" min="0" max="100" value="0" disabled></div>
+        <div class="control"><label for="saturation"><span data-i18n="saturation">Saturation</span><output id="saturationOut">100%</output></label><input id="saturation" type="range" min="0" max="200" value="100" disabled></div>
+        <div class="two-col">
+          <div class="control"><label for="scanMode" data-i18n="scanMode">Scan mode</label><select id="scanMode" disabled><option value="color" data-i18n="colorMode">Color</option><option value="grayscale" data-i18n="grayMode">Grayscale</option><option value="bw" data-i18n="bwMode">Black &amp; white</option></select></div>
+          <div class="control"><label for="noiseReduction" data-i18n="noiseReduction">Noise reduction</label><select id="noiseReduction" disabled><option value="0" data-i18n="off">Off</option><option value="1" data-i18n="light">Light</option></select></div>
+        </div>
+        <div class="control"><label for="sharpen" data-i18n="sharpen">Sharpening</label><select id="sharpen" disabled><option value="0" data-i18n="off">Off</option><option value="1" data-i18n="standard">Standard</option></select></div>
+        <div class="two-col"><button class="button" id="resetEdits" type="button" disabled data-i18n="resetEdits">Reset edits</button><button class="button" id="removePage" type="button" disabled data-i18n="removePage">Remove page</button></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head"><h2 data-i18n="pdfSettings">3. PDF settings</h2><span class="eyebrow" data-i18n="offlineReady">No PDF CDN required</span></div>
+        <div class="control"><label for="documentTitle" data-i18n="documentTitle">Document title</label><input id="documentTitle" type="text" maxlength="100" value="DocTake Document"></div>
+        <div class="two-col">
+          <div class="control"><label for="paperSize" data-i18n="paperSize">Paper size</label><select id="paperSize"><option value="a4">A4</option><option value="a5">A5</option><option value="letter">Letter</option><option value="custom">Custom</option></select></div>
+          <div class="control"><label for="orientation" data-i18n="orientation">Orientation</label><select id="orientation"><option value="auto" data-i18n="auto">Auto</option><option value="portrait" data-i18n="portrait">Portrait</option><option value="landscape" data-i18n="landscape">Landscape</option></select></div>
+        </div>
+        <div class="two-col" id="customSize" hidden>
+          <div class="control"><label for="customWidth" data-i18n="widthMm">Width (mm)</label><input id="customWidth" type="number" min="50" max="500" value="210"></div>
+          <div class="control"><label for="customHeight" data-i18n="heightMm">Height (mm)</label><input id="customHeight" type="number" min="50" max="500" value="297"></div>
+        </div>
+        <div class="two-col">
+          <div class="control"><label for="margin" data-i18n="marginMm">Margin (mm)</label><input id="margin" type="number" min="0" max="30" value="8"></div>
+          <div class="control"><label for="quality" data-i18n="jpegQuality">Image quality</label><select id="quality"><option value="0.72" data-i18n="compact">Compact</option><option value="0.84" selected data-i18n="balanced">Balanced</option><option value="0.94" data-i18n="high">High</option></select></div>
+        </div>
+        <label class="check-row"><input type="checkbox" id="pageNumbers" checked><span data-i18n="pageNumbers">Print page numbers</span></label>
+        <button class="button primary" id="generatePdf" type="button" style="width:100%;margin-top:5px" disabled>▤ <span data-i18n="generatePdf">Generate PDF</span></button>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head"><h2 data-i18n="labHeading">Optional integration lab</h2><span class="eyebrow">Isolated</span></div>
+        <p class="subtle" data-i18n="labIntro">Try one framework or library in a sandboxed preview. It cannot modify DocTake's core interface.</p>
+        <div class="integration-grid"><select id="integrationSelect" class="select" aria-label="Optional integration"></select><button id="loadIntegration" class="button small" type="button" data-i18n="tryIt">Try</button></div>
+        <iframe class="integration-frame" id="integrationFrame" title="Optional integration sandbox" sandbox="allow-scripts"></iframe>
+        <p class="integration-note" id="integrationNote" aria-live="polite"></p>
+      </section>
+    </aside>
+
+    <main class="maincol">
+      <section class="workspace-card">
+        <div class="preview-top"><div><span class="eyebrow" data-i18n="previewEyebrow">DOCUMENT CANVAS</span><h2 data-i18n="previewHeading">Page preview</h2></div><div class="preview-tools"><button class="button small" id="fitPreview" type="button" disabled data-i18n="fitPreview">Fit preview</button><span class="pill" id="imageDimensions">No page selected</span></div></div>
+        <div class="preview-stage" id="previewStage">
+          <div class="empty-state" id="emptyState"><div class="big">▤</div><strong data-i18n="emptyTitle">Your document starts here</strong><span data-i18n="emptyText">Take a photo or choose one or more images to create your first PDF.</span></div>
+          <canvas id="previewCanvas" class="hidden" aria-label="Selected page preview"></canvas>
+        </div>
+      </section>
+
+      <section class="workspace-card">
+        <div class="pages-head"><div><span class="eyebrow" data-i18n="pagesEyebrow">DOCUMENT CONTENTS</span><h2 data-i18n="pagesHeading">Pages</h2></div><span class="page-count" id="pageCount">0 pages</span></div>
+        <div class="pages-grid" id="pagesGrid"><p class="subtle" data-i18n="noPages">No pages yet. Add photos to begin.</p></div>
+      </section>
+
+      <section class="workspace-card">
+        <div class="pages-head"><div><span class="eyebrow" data-i18n="outputEyebrow">EXPORT</span><h2 data-i18n="outputHeading">PDF document</h2></div><span class="pill" id="pdfMeta">Not generated</span></div>
+        <div class="pdf-actions"><p class="subtle" id="pdfDescription" data-i18n="pdfDescription">Your PDF is assembled in this tab. No photos are uploaded to a server.</p><div class="preview-tools"><button class="button" id="clearDocument" type="button" disabled data-i18n="clearAll">Clear all</button><button class="button" id="batchExport" type="button" disabled data-i18n="batchZip">Batch ZIP</button><button class="button primary" id="downloadPdf" type="button" disabled>↓ <span data-i18n="downloadPdf">Download PDF</span></button></div></div>
+        <div class="pdf-preview hidden" id="pdfPreviewWrap"><iframe id="pdfFrame" title="Generated PDF preview"></iframe></div>
+      </section>
+    </main>
+  </div>
+  <footer class="footer"><span data-i18n="privacyFooter">Privacy-first: image processing and PDF creation run locally in this browser. Camera access requires HTTPS or localhost.</span></footer>
+</div>
+
+<dialog class="camera-dialog" id="cameraDialog">
+  <div class="dialog-head"><strong data-i18n="cameraDialogTitle">Camera capture</strong><button class="icon-button" id="closeCamera" type="button" aria-label="Close">×</button></div>
+  <div class="camera-content"><video id="cameraVideo" autoplay muted playsinline></video><p class="subtle" id="cameraMessage" data-i18n="cameraStarting">Requesting camera access…</p><div class="camera-actions"><div><button class="button" id="switchCamera" type="button" data-i18n="switchCamera">Switch camera</button></div><button class="button primary" id="captureFrame" type="button" disabled>● <span data-i18n="takePhoto">Take photo</span></button></div></div>
+</dialog>
+
+<script>
+(() => {
+  'use strict';
+
+  const MAX_FILES = 40;
+  const MAX_FILE_BYTES = 25 * 1024 * 1024;
+  const MAX_SOURCE_DIMENSION = 3000;
+  const MAX_PDF_DIMENSION = 2600;
+  const $ = (id) => document.getElementById(id);
+  const state = { pages: [], selectedId: null, language: 'en', theme: 'system', pdfBlob: null, pdfUrl: null, cameraStream: null, cameraFacing: 'environment', busy: false };
+
+  const translations = {
+    en: {
+      tagline:'Scan, enhance, and export — right in your browser',themeSystem:'System',themeLight:'Light',themeDark:'Dark',captureHeading:'1. Add pages',localBadge:'Local processing',camera:'Use camera',chooseImages:'Choose images',dropTitle:'Drop photos here',dropHint:'JPG, PNG, WebP · up to 25 MB each',captureHelp:'Capture several pages or import existing photos. Images stay in this browser tab.',editHeading:'2. Enhance selected page',autoDetect:'Detect & straighten document',rotateLeft:'Rotate left',rotateRight:'Rotate right',cropHeading:'Manual crop · trim from edges',left:'Left',right:'Right',top:'Top',bottom:'Bottom',imageHeading:'Image adjustments',brightness:'Brightness',contrast:'Contrast',grayscale:'Grayscale mix',saturation:'Saturation',scanMode:'Scan mode',noiseReduction:'Noise reduction',sharpen:'Sharpening',colorMode:'Color',grayMode:'Grayscale',bwMode:'Black & white',off:'Off',light:'Light',standard:'Standard',compact:'Compact',balanced:'Balanced',high:'High',moveUp:'Move up',moveDown:'Move down',remove:'Remove',notGenerated:'Not generated',pdfMeta:'{n} pages · {size} MB',resetEdits:'Reset edits',removePage:'Remove page',pdfSettings:'3. PDF settings',offlineReady:'No PDF CDN required',documentTitle:'Document title',paperSize:'Paper size',orientation:'Orientation',auto:'Auto',portrait:'Portrait',landscape:'Landscape',widthMm:'Width (mm)',heightMm:'Height (mm)',marginMm:'Margin (mm)',jpegQuality:'Image quality',pageNumbers:'Print page numbers',generatePdf:'Generate PDF',batchZip:'Batch PDFs (ZIP)',labHeading:'Optional integration lab',labIntro:'Try one framework or library in a sandboxed preview. It cannot modify DocTake\'s core interface.',tryIt:'Try',previewEyebrow:'DOCUMENT CANVAS',previewHeading:'Page preview',fitPreview:'Fit preview',pagesEyebrow:'DOCUMENT CONTENTS',pagesHeading:'Pages',noPages:'No pages yet. Add photos to begin.',outputEyebrow:'EXPORT',outputHeading:'PDF document',pdfDescription:'Your PDF is assembled in this tab. No photos are uploaded to a server.',clearAll:'Clear all',downloadPdf:'Download PDF',privacyFooter:'Privacy-first: image processing and PDF creation run locally in this browser. Camera access requires HTTPS or localhost.',cameraDialogTitle:'Camera capture',cameraStarting:'Requesting camera access…',switchCamera:'Switch camera',takePhoto:'Take photo',noPage:'No page selected',pagesCount:'{n} pages',pageLabel:'Page {n}',generated:'Generated · {n} pages · {size}',ready:'Ready. Add photos to get started.',added:'Added {n} image(s).',invalidFile:'Skipped an unsupported or oversized file: {name}',tooMany:'The page limit is {n}. Some images were not added.',cameraUnavailable:'Camera access is unavailable. Use HTTPS or localhost and check browser permissions.',cameraDenied:'Camera permission was denied. You can still import image files.',cameraError:'Could not start the camera: {message}',cameraUnsupported:'This browser does not support camera capture.',cameraReady:'Camera ready. Frame your document and capture.',cameraNoStream:'Camera is not active.',captured:'Photo captured.',emptyPdf:'Add at least one page before generating a PDF.',pdfWorking:'Preparing pages and assembling the PDF…',pdfDone:'PDF generated and checked.',pdfFailed:'PDF generation failed: {message}',batchWorking:'Creating one PDF per page and packaging the ZIP…',batchDone:'Batch ZIP created: {n} PDF files.',downloadFirst:'Generate a PDF before downloading.',noSelection:'Select a page to edit.',detecting:'Detecting document edges…',detected:'Document boundary detected and perspective corrected.',detectFailed:'Could not find a clear document boundary. Try manual crop instead.',help:'Quick guide: add images or use the camera, select a page, adjust crop and image controls, then generate a PDF. Camera access requires HTTPS or localhost. Images are kept in memory only; refresh or close this tab to clear them.',cleared:'All pages and the generated PDF have been removed.',removed:'Page removed.',integrationUnavailable:'This item is documentation/editor tooling or has no verified standalone browser CDN. It is listed for architecture planning, not loaded.',integrationLoaded:'Loaded in the isolated sandbox. Check the preview for its result.',integrationError:'The integration could not be loaded. Check the network and its documented browser build.',integrationChoose:'Choose an integration',titleDefault:'DocTake Document',fileInvalidType:'This file type is not supported by the browser image decoder.',fileTooLarge:'This image exceeds the 25 MB per-file limit.',imageDecode:'The selected image could not be decoded.',customSizeInvalid:'Custom page dimensions must be between 50 and 500 mm.',marginInvalid:'Margin must be between 0 and 30 mm.'
+    },
+    ja: {
+      tagline:'ブラウザーだけでスキャン・補正・PDF出力',themeSystem:'システム設定',themeLight:'ライト',themeDark:'ダーク',captureHeading:'1. ページを追加',localBadge:'端末内で処理',camera:'カメラを使う',chooseImages:'画像を選択',dropTitle:'ここに写真をドロップ',dropHint:'JPG・PNG・WebP／1ファイル25 MBまで',captureHelp:'複数ページを撮影するか、既存の写真を読み込めます。画像はこのタブ内で処理されます。',editHeading:'2. 選択ページを補正',autoDetect:'書類の検出・傾き補正',rotateLeft:'左に回転',rotateRight:'右に回転',cropHeading:'手動トリミング・各辺からの切り取り',left:'左',right:'右',top:'上',bottom:'下',imageHeading:'画像調整',brightness:'明るさ',contrast:'コントラスト',grayscale:'グレースケールの適用量',saturation:'彩度',scanMode:'スキャンモード',noiseReduction:'ノイズ軽減',sharpen:'シャープ化',colorMode:'カラー',grayMode:'グレースケール',bwMode:'白黒（二値化）',off:'オフ',light:'弱',standard:'標準',compact:'小さめ',balanced:'標準',high:'高画質',moveUp:'上へ移動',moveDown:'下へ移動',remove:'削除',notGenerated:'未生成',pdfMeta:'{n}ページ・{size} MB',resetEdits:'補正をリセット',removePage:'ページを削除',pdfSettings:'3. PDF設定',offlineReady:'PDF用CDN不要',documentTitle:'文書タイトル',paperSize:'用紙サイズ',orientation:'向き',auto:'自動',portrait:'縦',landscape:'横',widthMm:'幅（mm）',heightMm:'高さ（mm）',marginMm:'余白（mm）',jpegQuality:'画像品質',pageNumbers:'ページ番号を印字',generatePdf:'PDFを生成',batchZip:'個別PDFをZIP出力',labHeading:'オプション統合ラボ',labIntro:'フレームワークやライブラリを分離されたプレビューで試せます。DocTake本体の画面には干渉しません。',tryIt:'試す',previewEyebrow:'ドキュメントキャンバス',previewHeading:'ページプレビュー',fitPreview:'プレビューを更新',pagesEyebrow:'ドキュメント内容',pagesHeading:'ページ一覧',noPages:'ページはありません。写真を追加してください。',outputEyebrow:'エクスポート',outputHeading:'PDFドキュメント',pdfDescription:'PDFはこのタブ内で生成されます。写真がサーバーにアップロードされることはありません。',clearAll:'すべて削除',downloadPdf:'PDFをダウンロード',privacyFooter:'プライバシー優先：画像処理とPDF生成はブラウザー内で実行されます。カメラ利用にはHTTPSまたはlocalhostが必要です。',cameraDialogTitle:'カメラ撮影',cameraStarting:'カメラへのアクセスを要求しています…',switchCamera:'カメラ切替',takePhoto:'撮影',noPage:'ページ未選択',pagesCount:'{n}ページ',pageLabel:'ページ {n}',generated:'生成済み・{n}ページ・{size}',ready:'準備完了。写真を追加してください。',added:'画像を{n}件追加しました。',invalidFile:'未対応形式またはサイズ超過のためスキップしました：{name}',tooMany:'ページ上限は{n}件です。一部の画像は追加されませんでした。',cameraUnavailable:'カメラを利用できません。HTTPSまたはlocalhostで開き、ブラウザーの権限を確認してください。',cameraDenied:'カメラの利用が拒否されました。画像ファイルの読み込みは利用できます。',cameraError:'カメラを起動できませんでした：{message}',cameraUnsupported:'このブラウザーはカメラ撮影に対応していません。',cameraReady:'カメラを利用できます。書類を画面に合わせて撮影してください。',cameraNoStream:'カメラが起動していません。',captured:'写真を撮影しました。',emptyPdf:'PDFを生成するには、1ページ以上追加してください。',pdfWorking:'ページを準備してPDFを生成しています…',pdfDone:'PDFを生成し、ファイルを検証しました。',pdfFailed:'PDF生成に失敗しました：{message}',batchWorking:'ページごとのPDFを作成し、ZIPにまとめています…',batchDone:'ZIPを生成しました。PDFファイル数：{n}件。',downloadFirst:'先にPDFを生成してください。',noSelection:'編集するページを選択してください。',detecting:'書類の境界を検出しています…',detected:'書類の境界を検出し、透視補正しました。',detectFailed:'書類の境界を検出できません。手動トリミングをお試しください。',help:'基本操作：画像を追加またはカメラで撮影し、ページを選択してトリミングや画像調整を行い、PDFを生成します。カメラにはHTTPSまたはlocalhostが必要です。画像はメモリー内だけに保持され、タブを閉じるか再読み込みすると消去されます。',cleared:'すべてのページと生成済みPDFを削除しました。',removed:'ページを削除しました。',integrationUnavailable:'これはエディター向けツール、または単独ブラウザー用CDNを確認できない項目です。読み込み対象ではなく、技術構成の一覧として掲載しています。',integrationLoaded:'分離されたサンドボックスに読み込みました。プレビューを確認してください。',integrationError:'統合ライブラリを読み込めませんでした。ネットワークと公式のブラウザー版を確認してください。',integrationChoose:'統合ライブラリを選択',titleDefault:'DocTake ドキュメント',fileInvalidType:'この画像形式はブラウザーのデコーダーに対応していません。',fileTooLarge:'画像は1ファイル25 MB以下にしてください。',imageDecode:'選択した画像をデコードできませんでした。',customSizeInvalid:'カスタム用紙サイズは50～500 mmで指定してください。',marginInvalid:'余白は0～30 mmで指定してください。'
+    }
+  };
+
+  const t = (key, vars = {}) => {
+    let value = translations[state.language]?.[key] || translations.en[key] || key;
+    for (const [name, val] of Object.entries(vars)) value = value.replaceAll(`{${name}}`, String(val));
+    return value;
+  };
+  const setStatus = (message, kind = 'ok') => { $('statusText').textContent = message; $('statusDot').style.background = kind === 'error' ? 'var(--danger)' : kind === 'work' ? 'var(--accent)' : 'var(--success)'; };
+  const selectedPage = () => state.pages.find(p => p.id === state.selectedId) || null;
+  const makeId = () => `${Date.now().toString(36)}-${Math.random().toString(36).slice(2,8)}`;
+  const revokePdf = () => { if (state.pdfUrl) URL.revokeObjectURL(state.pdfUrl); state.pdfUrl = null; state.pdfBlob = null; $('pdfFrame').removeAttribute('src'); $('pdfPreviewWrap').classList.add('hidden'); $('downloadPdf').disabled = true; $('pdfMeta').textContent = t('notGenerated'); };
+
+  function applyLanguage() {
+    document.documentElement.lang = state.language;
+    document.querySelectorAll('[data-i18n]').forEach(el => { const key = el.dataset.i18n; if (translations[state.language][key]) el.textContent = translations[state.language][key]; });
+    $('statusText').textContent = state.pages.length ? t('pagesCount',{n:state.pages.length}) : t('ready');
+    $('pageCount').textContent = t('pagesCount',{n:state.pages.length});
+    $('imageDimensions').textContent = selectedPage() ? `${selectedPage().source.width} × ${selectedPage().source.height}` : t('noPage');
+    if(state.pdfBlob)$('pdfMeta').textContent=t('pdfMeta',{n:state.pages.length,size:(state.pdfBlob.size/1024/1024).toFixed(2)});else $('pdfMeta').textContent=t('notGenerated');
+    renderPages();
+  }
+  function applyTheme(theme) {
+    state.theme = theme;
+    document.documentElement.dataset.theme = theme;
+    try { localStorage.setItem('doctake-theme', theme); } catch (_) {}
+  }
+  function setEditorEnabled(enabled) {
+    ['autoDetect','rotateLeft','rotateRight','cropLeft','cropRight','cropTop','cropBottom','brightness','contrast','grayscale','saturation','scanMode','noiseReduction','sharpen','resetEdits','removePage','fitPreview'].forEach(id => { $(id).disabled = !enabled; });
+  }
+  function clearPdfOnEdit() { if (state.pdfBlob) revokePdf(); }
+
+  async function canvasFromFile(file) {
+    if (!file || !file.type.startsWith('image/')) throw new Error(t('fileInvalidType'));
+    if (file.size > MAX_FILE_BYTES) throw new Error(t('fileTooLarge'));
+    let bitmap;
+    try { bitmap = await createImageBitmap(file, { imageOrientation: 'from-image' }); }
+    catch (_) {
+      const url = URL.createObjectURL(file);
+      try {
+        bitmap = await new Promise((resolve, reject) => { const img = new Image(); img.onload = () => resolve(img); img.onerror = () => reject(new Error(t('imageDecode'))); img.src = url; });
+      } finally { URL.revokeObjectURL(url); }
+    }
+    const ratio = Math.min(1, MAX_SOURCE_DIMENSION / Math.max(bitmap.width, bitmap.height));
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.max(1, Math.round(bitmap.width * ratio)); canvas.height = Math.max(1, Math.round(bitmap.height * ratio));
+    const ctx = canvas.getContext('2d', { alpha: false });
+    if (!ctx) throw new Error('Canvas 2D context unavailable.');
+    ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, canvas.width, canvas.height); ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+    if (typeof bitmap.close === 'function') bitmap.close();
+    return canvas;
+  }
+  async function addFiles(fileList) {
+    const files = Array.from(fileList || []).filter(Boolean);
+    if (!files.length) return;
+    let added = 0;
+    for (const file of files) {
+      if (state.pages.length >= MAX_FILES) { setStatus(t('tooMany',{n:MAX_FILES}),'error'); break; }
+      try {
+        const source = await canvasFromFile(file);
+        state.pages.push({ id: makeId(), name: file.name || `Camera-${state.pages.length+1}.jpg`, source, crop:{left:0,right:0,top:0,bottom:0}, brightness:100, contrast:110, grayscale:0, saturation:100, scanMode:'color', noiseReduction:0, sharpen:0 });
+        state.selectedId = state.pages[state.pages.length - 1].id; added++;
+      } catch (error) { setStatus(t('invalidFile',{name:file.name || error.message}),'error'); }
+    }
+    if (added) { clearPdfOnEdit(); updateUI(); setStatus(t('added',{n:added})); }
+  }
+
+  function renderPageCanvas(page, maxDim = MAX_SOURCE_DIMENSION) {
+    const src = page.source;
+    const c = page.crop;
+    const sx = Math.min(.45, Math.max(0, c.left / 100));
+    const sy = Math.min(.45, Math.max(0, c.top / 100));
+    const sw = Math.max(.1, 1 - sx - Math.min(.45, Math.max(0,c.right/100)));
+    const sh = Math.max(.1, 1 - sy - Math.min(.45, Math.max(0,c.bottom/100)));
+    const cropX = Math.round(src.width * sx), cropY = Math.round(src.height * sy);
+    const cropW = Math.max(1, Math.round(src.width * sw)), cropH = Math.max(1, Math.round(src.height * sh));
+    const scale = Math.min(1, maxDim / Math.max(cropW,cropH));
+    const out = document.createElement('canvas'); out.width = Math.max(1,Math.round(cropW*scale)); out.height = Math.max(1,Math.round(cropH*scale));
+    const ctx = out.getContext('2d',{alpha:false});
+    ctx.fillStyle='#fff'; ctx.fillRect(0,0,out.width,out.height);
+    const modeGray=page.scanMode==='grayscale'||page.scanMode==='bw'?100:page.grayscale;
+    ctx.filter = `brightness(${page.brightness}%) contrast(${page.contrast}%) grayscale(${modeGray}%) saturate(${page.saturation ?? 100}%)`;
+    ctx.drawImage(src,cropX,cropY,cropW,cropH,0,0,out.width,out.height); ctx.filter='none';
+    if(page.noiseReduction || page.sharpen || page.scanMode==='bw') applyPixelEffects(out,page);
+    return out;
+  }
+  function applyPixelEffects(canvas,page) {
+    const ctx=canvas.getContext('2d',{willReadFrequently:true});
+    const frame=ctx.getImageData(0,0,canvas.width,canvas.height);let data=frame.data;const w=canvas.width,h=canvas.height;
+    const convolve=(source,kernel)=>{
+      const result=new Uint8ClampedArray(source.length);
+      const weights=kernel.weights,divisor=kernel.divisor||1;
+      result.set(source);
+      for(let y=1;y<h-1;y++) for(let x=1;x<w-1;x++){
+        const idx=(y*w+x)*4;
+        for(let ch=0;ch<3;ch++){
+          let value=0,k=0;
+          for(let ky=-1;ky<=1;ky++) for(let kx=-1;kx<=1;kx++){
+            const at=((y+ky)*w+(x+kx))*4+ch;value+=source[at]*weights[k++];
+          }
+          result[idx+ch]=Math.max(0,Math.min(255,value/divisor));
+        }
+        result[idx+3]=255;
+      }
+      return result;
+    };
+    if(page.noiseReduction){
+      const smooth=convolve(data,{weights:[1,2,1,2,4,2,1,2,1],divisor:16});
+      for(let i=0;i<data.length;i+=4){const delta=Math.abs(data[i]-smooth[i])+Math.abs(data[i+1]-smooth[i+1])+Math.abs(data[i+2]-smooth[i+2]);if(delta<72){data[i]=(data[i]+smooth[i])>>1;data[i+1]=(data[i+1]+smooth[i+1])>>1;data[i+2]=(data[i+2]+smooth[i+2])>>1;}}
+    }
+    if(page.sharpen){data=convolve(data,{weights:[0,-1,0,-1,5,-1,0,-1,0],divisor:1});}
+    if(page.scanMode==='bw'){
+      const threshold=165;
+      for(let i=0;i<data.length;i+=4){const lum=.299*data[i]+.587*data[i+1]+.114*data[i+2];const v=lum>=threshold?255:0;data[i]=v;data[i+1]=v;data[i+2]=v;}
+    }
+    frame.data.set(data);ctx.putImageData(frame,0,0);
+  }
+  function renderPreview() {
+    const page = selectedPage();
+    if (!page) { $('previewCanvas').classList.add('hidden'); $('emptyState').classList.remove('hidden'); $('imageDimensions').textContent=t('noPage'); setEditorEnabled(false); $('selectedLabel').textContent='—'; return; }
+    const output = renderPageCanvas(page,1600); const target=$('previewCanvas');
+    target.width=output.width; target.height=output.height; target.getContext('2d').drawImage(output,0,0);
+    target.classList.remove('hidden'); $('emptyState').classList.add('hidden');
+    $('imageDimensions').textContent=`${page.source.width} × ${page.source.height}`; $('selectedLabel').textContent=t('pageLabel',{n:state.pages.indexOf(page)+1});
+    setEditorEnabled(true);
+    for (const [id,key] of [['cropLeft','left'],['cropRight','right'],['cropTop','top'],['cropBottom','bottom']]) { $(id).value=page.crop[key]; $(`${id}Out`).textContent=`${page.crop[key]}%`; }
+    for (const [id,key] of [['brightness','brightness'],['contrast','contrast'],['grayscale','grayscale'],['saturation','saturation']]) { $(id).value=page[key] ?? (key==='saturation'?100:0); $(`${id}Out`).textContent=`${page[key] ?? (key==='saturation'?100:0)}%`; }
+    $('scanMode').value=page.scanMode||'color';$('noiseReduction').value=String(page.noiseReduction||0);$('sharpen').value=String(page.sharpen||0);
+  }
+  function renderPages() {
+    const grid=$('pagesGrid'); grid.replaceChildren();
+    if (!state.pages.length) { const p=document.createElement('p'); p.className='subtle'; p.textContent=t('noPages'); grid.append(p); }
+    state.pages.forEach((page,index) => {
+      const card=document.createElement('article'); card.className=`page-card${page.id===state.selectedId?' selected':''}`;
+      const selectButton=document.createElement('button'); selectButton.type='button'; selectButton.className='page-select'; selectButton.setAttribute('aria-label',t('pageLabel',{n:index+1}));
+      const wrap=document.createElement('div'); wrap.className='thumb-wrap'; const thumb=document.createElement('canvas');
+      const preview=renderPageCanvas(page,180); thumb.width=preview.width; thumb.height=preview.height; thumb.getContext('2d').drawImage(preview,0,0); wrap.append(thumb);
+      const name=document.createElement('div'); name.className='page-name'; name.textContent=`${index+1}. ${page.name}`;
+      selectButton.append(wrap,name); selectButton.addEventListener('click',()=>selectPage(page.id));
+      const controls=document.createElement('div'); controls.className='page-controls';
+      [['↑',t('moveUp'),()=>movePage(index,-1)],['↓',t('moveDown'),()=>movePage(index,1)],['×',t('remove'),()=>removePage(page.id)]].forEach(([label,title,fn])=>{ const b=document.createElement('button'); b.type='button'; b.textContent=label; b.title=title; b.setAttribute('aria-label',title); b.addEventListener('click',fn); controls.append(b); });
+      card.append(selectButton,controls); grid.append(card);
+    });
+    $('pageCount').textContent=t('pagesCount',{n:state.pages.length}); $('generatePdf').disabled=!state.pages.length || state.busy; $('batchExport').disabled=!state.pages.length || state.busy; $('clearDocument').disabled=!state.pages.length && !state.pdfBlob;
+  }
+  function updateUI() { renderPages(); renderPreview(); $('clearDocument').disabled=!state.pages.length&&!state.pdfBlob; $('generatePdf').disabled=!state.pages.length||state.busy; $('batchExport').disabled=!state.pages.length||state.busy; }
+  function selectPage(id) { state.selectedId=id; renderPages(); renderPreview(); }
+  function movePage(index,delta) { const next=index+delta; if(next<0||next>=state.pages.length)return; const [item]=state.pages.splice(index,1); state.pages.splice(next,0,item); state.selectedId=item.id; clearPdfOnEdit(); updateUI(); }
+  function removePage(id) { const index=state.pages.findIndex(p=>p.id===id); if(index<0)return; state.pages.splice(index,1); if(state.selectedId===id) state.selectedId=state.pages[Math.min(index,state.pages.length-1)]?.id||null; clearPdfOnEdit(); updateUI(); setStatus(t('removed')); }
+  function updateSelected(key,value) { const page=selectedPage(); if(!page)return; page[key]=value; clearPdfOnEdit(); renderPreview(); renderPages(); }
+  function rotateSelected(degrees) {
+    const page=selectedPage(); if(!page)return;
+    const src=page.source; const c=document.createElement('canvas'); c.width=degrees%180?src.height:src.width; c.height=degrees%180?src.width:src.height;
+    const ctx=c.getContext('2d'); ctx.translate(c.width/2,c.height/2); ctx.rotate(degrees*Math.PI/180); ctx.drawImage(src,-src.width/2,-src.height/2); page.source=c;
+    clearPdfOnEdit(); updateUI();
+  }
+
+  function solveLinear(matrix, vector) {
+    const n=vector.length; const a=matrix.map((row,i)=>[...row,vector[i]]);
+    for(let col=0;col<n;col++){
+      let pivot=col; for(let r=col+1;r<n;r++) if(Math.abs(a[r][col])>Math.abs(a[pivot][col])) pivot=r;
+      if(Math.abs(a[pivot][col])<1e-10) throw new Error('Degenerate perspective transform.');
+      [a[col],a[pivot]]=[a[pivot],a[col]]; const div=a[col][col]; for(let j=col;j<=n;j++)a[col][j]/=div;
+      for(let r=0;r<n;r++){if(r===col)continue;const f=a[r][col];for(let j=col;j<=n;j++)a[r][j]-=f*a[col][j];}
+    }
+    return a.map(row=>row[n]);
+  }
+  function rectify(source, points) {
+    const [tl,tr,br,bl]=points;
+    const dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
+    const width=Math.max(dist(tl,tr),dist(bl,br)); const height=Math.max(dist(tl,bl),dist(tr,br));
+    const scale=Math.min(1,MAX_SOURCE_DIMENSION/Math.max(width,height));
+    const W=Math.max(2,Math.round(width*scale)),H=Math.max(2,Math.round(height*scale));
+    const dst=[{x:0,y:0},{x:W-1,y:0},{x:W-1,y:H-1},{x:0,y:H-1}];
+    const A=[],B=[];
+    for(let i=0;i<4;i++){const {x,y}=dst[i],p=points[i];A.push([x,y,1,0,0,0,-x*p.x,-y*p.x]);B.push(p.x);A.push([0,0,0,x,y,1,-x*p.y,-y*p.y]);B.push(p.y);}
+    const h=solveLinear(A,B); const input=source.getContext('2d').getImageData(0,0,source.width,source.height); const output=new ImageData(W,H);
+    for(let y=0;y<H;y++) for(let x=0;x<W;x++){
+      const den=h[6]*x+h[7]*y+1; const sx=(h[0]*x+h[1]*y+h[2])/den; const sy=(h[3]*x+h[4]*y+h[5])/den;
+      const ix=Math.max(0,Math.min(source.width-1,Math.round(sx))),iy=Math.max(0,Math.min(source.height-1,Math.round(sy)));
+      const si=(iy*source.width+ix)*4,di=(y*W+x)*4; output.data[di]=input.data[si];output.data[di+1]=input.data[si+1];output.data[di+2]=input.data[si+2];output.data[di+3]=255;
+    }
+    const result=document.createElement('canvas'); result.width=W;result.height=H;result.getContext('2d').putImageData(output,0,0); return result;
+  }
+  function findDocumentCorners(canvas) {
+    const small=document.createElement('canvas'); const scale=Math.min(1,420/Math.max(canvas.width,canvas.height)); small.width=Math.max(1,Math.round(canvas.width*scale));small.height=Math.max(1,Math.round(canvas.height*scale));
+    const ctx=small.getContext('2d',{willReadFrequently:true});ctx.drawImage(canvas,0,0,small.width,small.height);const {data,width,height}=ctx.getImageData(0,0,small.width,small.height);
+    let minSum=Infinity,maxSum=-Infinity,minDiff=Infinity,maxDiff=-Infinity;let tl,tr,br,bl,count=0,minX=width,minY=height,maxX=0,maxY=0;
+    for(let y=0;y<height;y+=2)for(let x=0;x<width;x+=2){const i=(y*width+x)*4,r=data[i],g=data[i+1],b=data[i+2],lum=.299*r+.587*g+.114*b,sat=Math.max(r,g,b)-Math.min(r,g,b);if(lum<150||sat>105)continue;count++;minX=Math.min(minX,x);maxX=Math.max(maxX,x);minY=Math.min(minY,y);maxY=Math.max(maxY,y);const sum=x+y,diff=x-y;if(sum<minSum){minSum=sum;tl={x,y};}if(sum>maxSum){maxSum=sum;br={x,y};}if(diff>maxDiff){maxDiff=diff;tr={x,y};}if(diff<minDiff){minDiff=diff;bl={x,y};}}
+    if(count<Math.max(20,width*height*.012)||!tl||!tr||!br||!bl) return null;
+    if((maxX-minX)<width*.25||(maxY-minY)<height*.25)return null;
+    const pts=[tl,tr,br,bl].map(p=>({x:p.x/scale,y:p.y/scale}));
+    const area=Math.abs(pts.reduce((sum,p,i)=>{const q=pts[(i+1)%4];return sum+p.x*q.y-q.x*p.y;},0)/2);
+    if(area<canvas.width*canvas.height*.12)return null;
+    return pts;
+  }
+  function autoDetectSelected() {
+    const page=selectedPage();if(!page){setStatus(t('noSelection'),'error');return;}
+    setStatus(t('detecting'),'work');
+    try{const corners=findDocumentCorners(page.source);if(!corners)throw new Error('No stable quadrilateral detected.');page.source=rectify(page.source,corners);page.crop={left:0,right:0,top:0,bottom:0};clearPdfOnEdit();updateUI();setStatus(t('detected'));}
+    catch(error){setStatus(t('detectFailed'),'error');}
+  }
+
+  function getPageSize(imageWidth = 1, imageHeight = 1) {
+    const size=$('paperSize').value;let w=210,h=297;
+    if(size==='a5'){w=148;h=210;}else if(size==='letter'){w=215.9;h=279.4;}else if(size==='custom'){w=Number($('customWidth').value);h=Number($('customHeight').value);if(!Number.isFinite(w)||!Number.isFinite(h)||w<50||h<50||w>500||h>500)throw new Error(t('customSizeInvalid'));}
+    const orientation=$('orientation').value;if(orientation==='landscape'||(orientation==='auto'&&imageWidth>imageHeight))[w,h]=[Math.max(w,h),Math.min(w,h)];else if(orientation==='portrait'||(orientation==='auto'&&imageWidth<=imageHeight))[w,h]=[Math.min(w,h),Math.max(w,h)];return {wPt:w*72/25.4,hPt:h*72/25.4};
+  }
+  function textBytes(str){return new TextEncoder().encode(str);}
+  function concatBytes(parts,total){const out=new Uint8Array(total);let offset=0;for(const p of parts){out.set(p,offset);offset+=p.length;}return out;}
+  function utf16Hex(text){let hex='FEFF';for(let i=0;i<text.length;i++){const code=text.charCodeAt(i);hex+=code.toString(16).padStart(4,'0').toUpperCase();}return hex;}
+  async function canvasToJpeg(canvas,quality){const blob=await new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(new Error('Image encoding failed.')),'image/jpeg',quality));return {bytes:new Uint8Array(await blob.arrayBuffer()),width:canvas.width,height:canvas.height};}
+  async function buildPdf(pagesOverride = state.pages, titleOverride = null) {
+    const pages=pagesOverride.slice();const quality=Number($('quality').value);const marginMm=Number($('margin').value);if(!Number.isFinite(marginMm)||marginMm<0||marginMm>30)throw new Error(t('marginInvalid'));
+    const pdfParts=[];const offsets=[0];let total=0;
+    const append=(bytes)=>{pdfParts.push(bytes);total+=bytes.length;}; const appendText=(s)=>append(textBytes(s));
+    append(new Uint8Array([37,80,68,70,45,49,46,52,10,37,68,111,99,84,97,107,101,10]));
+    const pageObjectIds=pages.map((_,i)=>3+i*3);const fontObjectId=3+pages.length*3;const infoObjectId=fontObjectId+1;const objectCount=infoObjectId;
+    const objectStart=(id)=>{offsets[id]=total;appendText(`${id} 0 obj\n`);};const objectEnd=()=>appendText('\nendobj\n');
+    objectStart(1);appendText('<< /Type /Catalog /Pages 2 0 R >>');objectEnd();
+    objectStart(2);appendText(`<< /Type /Pages /Kids [${pageObjectIds.map(id=>`${id} 0 R`).join(' ')}] /Count ${pages.length} >>`);objectEnd();
+    for(let i=0;i<pages.length;i++){
+      const page=pages[i];const image=await canvasToJpeg(renderPageCanvas(page,MAX_PDF_DIMENSION),quality);const pageId=pageObjectIds[i],imageId=pageId+1,contentId=pageId+2;
+      let {wPt,hPt}=getPageSize(image.width,image.height);const margin=marginMm*72/25.4;const availableW=Math.max(1,wPt-2*margin),availableH=Math.max(1,hPt-2*margin);const scale=Math.min(availableW/image.width,availableH/image.height);const drawW=image.width*scale,drawH=image.height*scale;const x=(wPt-drawW)/2,y=(hPt-drawH)/2;
+      const pageNo=$('pageNumbers').checked?`BT /F1 9 Tf ${wPt/2-6} 12 Td (${i+1}) Tj ET\n`:'';
+      const stream=textBytes(`q\n${drawW.toFixed(3)} 0 0 ${drawH.toFixed(3)} ${x.toFixed(3)} ${y.toFixed(3)} cm\n/Im0 Do\nQ\n${pageNo}`);
+      objectStart(pageId);appendText(`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${wPt.toFixed(3)} ${hPt.toFixed(3)}] /Resources << /XObject << /Im0 ${imageId} 0 R >> /Font << /F1 ${fontObjectId} 0 R >> >> /Contents ${contentId} 0 R >>`);objectEnd();
+      objectStart(imageId);appendText(`<< /Type /XObject /Subtype /Image /Width ${image.width} /Height ${image.height} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${image.bytes.length} >>\nstream\n`);append(image.bytes);appendText('\nendstream');objectEnd();
+      objectStart(contentId);appendText(`<< /Length ${stream.length} >>\nstream\n`);append(stream);appendText('endstream');objectEnd();
+    }
+    objectStart(fontObjectId);appendText('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>');objectEnd();
+    const title=titleOverride||$('documentTitle').value.trim()||t('titleDefault');
+    objectStart(infoObjectId);appendText(`<< /Title <${utf16Hex(title)}> /Creator (DocTake) /Producer (DocTake local PDF engine) >>`);objectEnd();
+    const xrefOffset=total;appendText(`xref\n0 ${objectCount+1}\n0000000000 65535 f \n`);
+    for(let id=1;id<=objectCount;id++)appendText(`${String(offsets[id]).padStart(10,'0')} 00000 n \n`);
+    appendText(`trailer\n<< /Size ${objectCount+1} /Root 1 0 R /Info ${infoObjectId} 0 R >>\nstartxref\n${xrefOffset}\n%%EOF`);
+    return new Blob([concatBytes(pdfParts,total)],{type:'application/pdf'});
+  }
+  async function generatePdf() {
+    if(!state.pages.length){setStatus(t('emptyPdf'),'error');return;}if(state.busy)return;
+    state.busy=true;$('generatePdf').disabled=true;setStatus(t('pdfWorking'),'work');
+    try{
+      const blob=await buildPdf();const header=await blob.slice(0,5).text();if(header!=='%PDF-')throw new Error('PDF header validation failed.');
+      revokePdf();state.pdfBlob=blob;state.pdfUrl=URL.createObjectURL(blob);$('pdfFrame').src=state.pdfUrl;$('pdfPreviewWrap').classList.remove('hidden');$('downloadPdf').disabled=false;$('pdfMeta').textContent=t('pdfMeta',{n:state.pages.length,size:(blob.size/1024/1024).toFixed(2)});setStatus(t('pdfDone'));
+    }catch(error){setStatus(t('pdfFailed',{message:error.message||'Unknown error'}),'error');}
+    finally{state.busy=false;$('generatePdf').disabled=!state.pages.length;$('batchExport').disabled=!state.pages.length;renderPages();}
+  }
+  function crc32(bytes) {
+    let crc=0xFFFFFFFF;
+    for(const byte of bytes){crc^=byte;for(let k=0;k<8;k++)crc=(crc>>>1)^((crc&1)?0xEDB88320:0);}
+    return (crc^0xFFFFFFFF)>>>0;
+  }
+  function makeStoredZip(entries) {
+    const encoder=new TextEncoder(),localParts=[],centralParts=[];let offset=0;
+    const write16=(view,pos,value)=>view.setUint16(pos,value,true);const write32=(view,pos,value)=>view.setUint32(pos,value>>>0,true);
+    const dosDate=0x21,dosTime=0;
+    for(const entry of entries){
+      const name=encoder.encode(entry.name),bytes=entry.bytes,crc=crc32(bytes);
+      const local=new Uint8Array(30+name.length),lv=new DataView(local.buffer);
+      write32(lv,0,0x04034b50);write16(lv,4,20);write16(lv,6,0x0800);write16(lv,8,0);write16(lv,10,dosTime);write16(lv,12,dosDate);write32(lv,14,crc);write32(lv,18,bytes.length);write32(lv,22,bytes.length);write16(lv,26,name.length);write16(lv,28,0);local.set(name,30);
+      localParts.push(local,bytes);
+      const central=new Uint8Array(46+name.length),cv=new DataView(central.buffer);
+      write32(cv,0,0x02014b50);write16(cv,4,20);write16(cv,6,20);write16(cv,8,0x0800);write16(cv,10,0);write16(cv,12,dosTime);write16(cv,14,dosDate);write32(cv,16,crc);write32(cv,20,bytes.length);write32(cv,24,bytes.length);write16(cv,28,name.length);write16(cv,30,0);write16(cv,32,0);write16(cv,34,0);write16(cv,36,0);write32(cv,38,0);write32(cv,42,offset);central.set(name,46);
+      centralParts.push(central);offset+=local.length+bytes.length;
+    }
+    const centralSize=centralParts.reduce((sum,p)=>sum+p.length,0),centralOffset=offset;
+    const end=new Uint8Array(22),ev=new DataView(end.buffer);write32(ev,0,0x06054b50);write16(ev,4,0);write16(ev,6,0);write16(ev,8,entries.length);write16(ev,10,entries.length);write32(ev,12,centralSize);write32(ev,16,centralOffset);write16(ev,20,0);
+    return new Blob([...localParts,...centralParts,end],{type:'application/zip'});
+  }
+  async function generateBatchZip() {
+    if(!state.pages.length){setStatus(t('emptyPdf'),'error');return;}if(state.busy)return;
+    state.busy=true;$('batchExport').disabled=true;$('generatePdf').disabled=true;setStatus(t('batchWorking'),'work');
+    try{
+      const entries=[];const base=$('documentTitle').value.trim()||'DocTake';
+      for(let i=0;i<state.pages.length;i++){
+        const page=state.pages[i];const title=`${base} - ${page.name}`;const pdf=await buildPdf([page],title);const bytes=new Uint8Array(await pdf.arrayBuffer());
+        const safe=page.name.replace(/\.[^.]+$/,'').replace(/[\\/:*?"<>|]+/g,'-').slice(0,65)||`Page-${i+1}`;
+        entries.push({name:`${String(i+1).padStart(3,'0')}-${safe}.pdf`,bytes});
+      }
+      const zip=makeStoredZip(entries);const signature=await zip.slice(0,2).text();if(signature!=='PK')throw new Error('ZIP signature validation failed.');
+      const url=URL.createObjectURL(zip);const a=document.createElement('a');const safeBase=base.replace(/[\\/:*?"<>|]+/g,'-').slice(0,65)||'DocTake';a.href=url;a.download=`${safeBase}-pages.zip`;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);setStatus(t('batchDone',{n:entries.length}));
+    }catch(error){setStatus(t('pdfFailed',{message:error.message||'Unknown error'}),'error');}
+    finally{state.busy=false;renderPages();}
+  }
+
+  function downloadPdf() {
+    if(!state.pdfBlob||!state.pdfUrl){setStatus(t('downloadFirst'),'error');return;}
+    const a=document.createElement('a');const safe=($('documentTitle').value.trim()||'DocTake').replace(/[\\/:*?"<>|]+/g,'-').slice(0,80);a.href=state.pdfUrl;a.download=`${safe||'DocTake'}.pdf`;document.body.append(a);a.click();a.remove();
+  }
+
+  async function startCamera() {
+    if(!window.isSecureContext){setStatus(t('cameraUnavailable'),'error');return;}
+    if(!navigator.mediaDevices?.getUserMedia){setStatus(t('cameraUnsupported'),'error');return;}
+    if(!$('cameraDialog').open)$('cameraDialog').showModal();$('cameraMessage').textContent=t('cameraStarting');$('captureFrame').disabled=true;
+    try{
+      stopCamera();state.cameraStream=await navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:{ideal:state.cameraFacing},width:{ideal:1920},height:{ideal:1080}}});
+      $('cameraVideo').srcObject=state.cameraStream;await $('cameraVideo').play();$('captureFrame').disabled=false;$('cameraMessage').textContent=t('cameraReady');
+    }catch(error){const msg=error.name==='NotAllowedError'?t('cameraDenied'):(!window.isSecureContext?t('cameraUnavailable'):t('cameraError',{message:error.message||error.name}));$('cameraMessage').textContent=msg;setStatus(msg,'error');}
+  }
+  function stopCamera(){if(state.cameraStream){state.cameraStream.getTracks().forEach(track=>track.stop());state.cameraStream=null;}if($('cameraVideo'))$('cameraVideo').srcObject=null;}
+  async function capturePhoto(){const video=$('cameraVideo');if(!state.cameraStream||!video.videoWidth){setStatus(t('cameraNoStream'),'error');return;}const c=document.createElement('canvas');const scale=Math.min(1,MAX_SOURCE_DIMENSION/Math.max(video.videoWidth,video.videoHeight));c.width=Math.round(video.videoWidth*scale);c.height=Math.round(video.videoHeight*scale);c.getContext('2d',{alpha:false}).drawImage(video,0,0,c.width,c.height);state.pages.push({id:makeId(),name:`Camera-${new Date().toISOString().replace(/[:.]/g,'-')}.jpg`,source:c,crop:{left:0,right:0,top:0,bottom:0},brightness:100,contrast:110,grayscale:0,saturation:100,scanMode:'color',noiseReduction:0,sharpen:0});state.selectedId=state.pages.at(-1).id;clearPdfOnEdit();updateUI();setStatus(t('captured'));}
+
+  const integrationCatalog = [
+    {name:'htmx 4',group:'Frontend framework',script:'https://cdn.jsdelivr.net/npm/htmx.org@4.0.1/dist/htmx.min.js',sample:'<button hx-get="/example" hx-target="#result">Example request</button><p id="result">Requires a backend route.</p>'},
+    {name:'htmax / htmx extensions',group:'HTMX extensions',script:'https://cdn.jsdelivr.net/npm/htmx.org@4.0.1/dist/htmax.min.js',sample:'<p>htmax bundles supported htmx extensions. Streaming features require a compatible server.</p>'},
+    {name:'Datastar',group:'Frontend framework',module:true,script:'https://cdn.jsdelivr.net/gh/starfederation/datastar@1.0.0/bundles/datastar.js',sample:'<p>Datastar loaded in an isolated preview. Backend-driven signals need a Datastar endpoint.</p>'},
+    {name:'Alpine.js',group:'Frontend framework',script:'https://cdn.jsdelivr.net/npm/alpinejs@3.15.0/dist/cdn.min.js',sample:'<div x-data="{count:0}"><button x-on:click="count++">Clicks: <span x-text="count"></span></button></div>'},
+    {name:'Unpoly',group:'Frontend framework',script:'https://cdn.jsdelivr.net/npm/unpoly@3.15.0/unpoly.js',css:'https://cdn.jsdelivr.net/npm/unpoly@3.15.0/unpoly.css'},
+    {name:'Stimulus',group:'Frontend framework',script:'https://cdn.jsdelivr.net/npm/@hotwired/stimulus@3.2.2/dist/stimulus.umd.js'},
+    {name:'Turbo',group:'Frontend framework',script:'https://cdn.jsdelivr.net/npm/@hotwired/turbo@8.0.23/dist/turbo.es2017-umd.js'},
+    {name:'Vue.js',group:'Frontend framework',script:'https://cdn.jsdelivr.net/npm/vue@3.5.25/dist/vue.global.prod.js',sample:'<div id="vue-demo"><button @click="count++">Vue count: {{ count }}</button></div>',init:'Vue.createApp({data:()=>({count:0})}).mount("#vue-demo")'},
+    {name:'Petite-Vue',group:'Frontend framework',script:'https://cdn.jsdelivr.net/npm/petite-vue@0.4.1/dist/petite-vue.iife.js',sample:'<div v-scope="{count:0}"><button @click="count++">Petite-Vue count: {{count}}</button></div>',init:'PetiteVue.createApp().mount()'},
+    {name:'_hyperscript',group:'Frontend interaction',script:'https://cdn.jsdelivr.net/npm/hyperscript.org@0.9.94/dist/_hyperscript.min.js'},
+    {name:'HTMX hx-see (not verified)',group:'HTMX extension',note:'No official hx-see extension was found. The likely intended extension is hx-sse (Server-Sent Events). Use the hx-sse extension in the current htmx documentation.'},
+    {name:'HTMX hx-ws',group:'HTMX extension',parent:'htmax / htmx extensions'},
+    {name:'HTMX hx-multipart',group:'HTMX extension',parent:'htmax / htmx extensions'},
+    {name:'HTMX hx-live',group:'HTMX extension',parent:'htmax / htmx extensions'},
+    {name:'HTMX hx-pending',group:'HTMX extension',parent:'htmax / htmx extensions'},
+    {name:'HTMX hx-preload',group:'HTMX extension',parent:'htmax / htmx extensions'},
+    {name:'HTMX hx-history-cache',group:'HTMX extension',parent:'htmax / htmx extensions'},
+    {name:'HTMX hx-head',group:'HTMX extension',parent:'htmax / htmx extensions'},
+    {name:'HTMX hx-download',group:'HTMX extension',parent:'htmax / htmx extensions'},
+    {name:'HTMX hx-targets',group:'HTMX extension',parent:'htmax / htmx extensions'},
+    {name:'HTMX hx-upsert',group:'HTMX extension',parent:'htmax / htmx extensions'},
+    {name:'HTMX hx-csp',group:'HTMX extension',parent:'htmax / htmx extensions'},
+    {name:'HTMX hx-alpine-compat',group:'HTMX extension',parent:'htmax / htmx extensions'},
+    ...['Collapse','Focus','Intersect','Mask','Morph','Persist','Resize','Sort','Anchor'].map(plugin=>({
+      name:`Alpine ${plugin} plugin`,group:'Alpine plugin',parent:'Alpine.js',
+      script:`https://cdn.jsdelivr.net/npm/@alpinejs/${plugin.toLowerCase()}@3.15.0/dist/cdn.min.js`,
+      sample:({
+        Collapse:'<div x-data="{open:false}"><button @click="open=!open">Toggle details</button><div x-show="open" x-collapse>Collapsible content</div></div>',
+        Focus:'<div x-data><input x-ref="target" placeholder="Focus target"><button @click="$focus.focus($refs.target)">Focus input</button></div>',
+        Intersect:'<div style="height:80px;overflow:auto;border:1px solid #ccd;padding:8px"><div style="height:90px">Scroll down</div><p x-data="{seen:false}" x-intersect="seen=true" x-text="seen ? 1 : 0"></p></div>',
+        Mask:'<label>Phone-like mask <input x-mask="999-9999" placeholder="123-4567"></label>',
+        Morph:`<div x-data="{toggle:false}"><button @click="toggle=!toggle; Alpine.morph($refs.target, toggle ? '<div><strong>Updated DOM</strong></div>' : '<div>Original DOM</div>')">Morph content</button><div x-ref="target">Original DOM</div></div>`,
+        Persist:'<div x-data="{count:$persist(0)}"><button @click="count++">Persisted count: <span x-text="count"></span></button></div>',
+        Resize:'<div x-data="{width:0}" x-resize="width=$width">Resize this preview. Width: <span x-text="Math.round(width)"></span>px</div>',
+        Sort:'<ul x-data x-sort style="padding:8px"><li x-sort:item="1">Drag item A</li><li x-sort:item="2">Drag item B</li><li x-sort:item="3">Drag item C</li></ul>',
+        Anchor:'<div x-data><a href="#anchor-target" x-anchor.bottom="$refs.anchor">Anchor action</a><div style="height:80px"></div><div x-ref="anchor" id="anchor-target">Anchor target</div></div>'
+      })[plugin],
+      note:'Alpine companion plugin. Load before Alpine initializes; verify plugin support for the pinned Alpine version.'
+    })),
+    {name:'Tailwind CSS IntelliSense',group:'IDE tooling',note:'Visual Studio Code extension for editor completion and diagnostics; not a browser runtime.'},
+    {name:'Visual Studio Code Marketplace',group:'IDE tooling',note:'Extension marketplace website; not a browser UI framework.'},
+    {name:'Emmet',group:'IDE tooling',note:'Editor abbreviation expansion; not a browser runtime.'},
+    {name:'Datastar IDE Support',group:'IDE tooling',note:'Editor integration; not part of the deployed browser application.'},
+    {name:'VS Code Extensions',group:'IDE tooling',note:'Editor add-ons; not browser runtime dependencies.'},
+    {name:'WebGL',group:'Graphics API',note:'Native browser graphics API. It is available through canvas.getContext("webgl") and needs custom rendering code.'},
+    {name:'p5.js',group:'Graphics library',script:'https://cdn.jsdelivr.net/npm/p5@2.4.0/lib/p5.min.js'},
+    {name:'Processing.js',group:'Graphics library',script:'https://cdnjs.cloudflare.com/ajax/libs/processing.js/1.6.6/processing.min.js',note:'Legacy project; prefer p5.js for new sketches.'},
+    {name:'Three.js',group:'Graphics library',module:true,script:'https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.module.js',sample:'Three.js was loaded as an ES module. Import it as THREE in module code; it does not expose a global THREE variable.'},
+    {name:'Tailwind Browser / Tailwind Play CDN',group:'CSS framework',script:'https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4'},
+    {name:'UnoCSS Runtime',group:'CSS runtime',script:'https://cdn.jsdelivr.net/npm/@unocss/runtime'},
+    {name:'daisyUI',group:'CSS component library',css:'https://cdn.jsdelivr.net/npm/daisyui@5'},
+    {name:'EaseMotion CSS / EaseMotionCSS',group:'CSS / animation',note:'No canonical project or verifiable official CDN endpoint could be identified for this exact library name. Replace this entry with the project repository or published package URL before enabling it.'},
+    {name:'Bootstrap',group:'CSS framework',css:'https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css',script:'https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js'},
+    {name:'Bulma',group:'CSS framework',css:'https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css'},
+    {name:'Pure.css',group:'CSS framework',css:'https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css'},
+    {name:'UIkit',group:'CSS framework',css:'https://cdn.jsdelivr.net/npm/uikit@3.23.11/dist/css/uikit.min.css',script:'https://cdn.jsdelivr.net/npm/uikit@3.23.11/dist/js/uikit.min.js'},
+    {name:'Flowbite',group:'CSS component library',css:'https://cdn.jsdelivr.net/npm/flowbite@4.0.1/dist/flowbite.min.css',script:'https://cdn.jsdelivr.net/npm/flowbite@4.0.1/dist/flowbite.min.js'},
+    {name:'Semantic UI',group:'CSS framework',css:'https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.css'},
+    {name:'Fomantic UI',group:'CSS framework',css:'https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.4/dist/semantic.min.css'},
+    {name:'Simple.css',group:'CSS framework',css:'https://cdn.jsdelivr.net/gh/kevquirk/simple.css@2.3.1/simple.min.css'},
+    {name:'Blades CSS',group:'CSS framework',css:'https://cdn.jsdelivr.net/npm/@anyblades/blades@3/css/blades.min.css'},
+    {name:'Open Props',group:'CSS tokens',css:'https://cdn.jsdelivr.net/npm/open-props@1.7.15/open-props.min.css'},
+    {name:'Materialize CSS',group:'CSS framework',css:'https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css'},
+    {name:'Pico CSS',group:'CSS framework',css:'https://cdn.jsdelivr.net/npm/@picocss/pico@2.1.1/css/pico.min.css'},
+    {name:'Web Awesome',group:'Web components',note:'Web Awesome is distributed as web components; use its official package/CDN instructions for the version selected by your project.'},
+    {name:'Iconify Icon',group:'Icon web component',script:'https://cdn.jsdelivr.net/npm/iconify-icon@3.0.0/dist/iconify-icon.min.js',sample:'<iconify-icon icon="mdi:camera" style="font-size:40px"></iconify-icon>'},
+    {name:'Bootstrap Components',group:'Component collection',parent:'Bootstrap',note:'Component layer supplied by Bootstrap itself; not a separate framework package.'},
+    {name:'UIkit Components',group:'Component collection',parent:'UIkit',note:'Components supplied by UIkit itself; not a separate framework package.'},
+    {name:'Uno CSS',group:'CSS engine',parent:'UnoCSS Runtime'},
+    {name:'Animate.css',group:'Animation CSS',css:'https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css',sample:'<div class="animate__animated animate__pulse" style="padding:12px">Animate.css pulse (on load)</div>'},
+    {name:'Hover.css',group:'Animation CSS',css:'https://cdn.jsdelivr.net/npm/hover.css@2.3.2/css/hover-min.css',sample:'<button class="hvr-grow" style="padding:12px">Hover me</button>'},
+    {name:'Magic Animations',group:'Animation CSS',css:'https://cdn.jsdelivr.net/npm/magic.css@1.4.6/dist/magic.min.css',sample:'<div class="magictime puffIn" style="padding:12px">Magic CSS demo</div>'},
+    {name:'Open Props Animations',group:'Animation CSS',css:'https://cdn.jsdelivr.net/npm/open-props@1.7.15/animations.min.css'},
+    {name:'transition.css',group:'Animation CSS',note:'This name is ambiguous; several unrelated projects use similar names. Supply the exact package/repository before loading.'}
+  ];
+
+  function initIntegrationSelect() {
+    const select=$('integrationSelect');const groups=new Map();
+    integrationCatalog.forEach((item,index)=>{if(!groups.has(item.group))groups.set(item.group,[]);groups.get(item.group).push({item,index});});
+    for(const [group,items] of groups){const optgroup=document.createElement('optgroup');optgroup.label=group;items.forEach(({item,index})=>{const option=document.createElement('option');option.value=String(index);option.textContent=item.name;optgroup.append(option);});select.append(optgroup);}
+  }
+  function sandboxDocument(item) {
+    const parent=item.parent?integrationCatalog.find(i=>i.name===item.parent):null;
+    if(item.note&&!item.script&&!item.css&&!parent)return null;
+    const scripts=[];const styles=[];
+    if(parent?.css)styles.push(parent.css);
+    if(item.css)styles.push(item.css);
+    if(item.parent==='Alpine.js'&&item.script){scripts.push(item.script);if(parent?.script)scripts.push(parent.script);}
+    else {if(parent?.script)scripts.push(parent.script);if(item.script)scripts.push(item.script);}
+    if(['Tailwind Browser / Tailwind Play CDN','daisyUI','Flowbite'].includes(item.name))scripts.push('https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4');
+    const sample=item.sample||'<button type="button" onclick="this.textContent=\'Loaded successfully\'">Test isolated preview</button>';
+    const styleLinks=styles.map(url=>`<link rel="stylesheet" href="${url}">`).join('');
+    const scriptTags=scripts.map(url=>`<script ${item.module&&url===item.script?'type="module" ':''}src="${url}" onerror="parent.postMessage({kind:'integration-error'},'*')"><\/script>`).join('');
+    const initScript=item.init?`<script>${item.init}<\/script>`:'';
+    return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>DocTake integration lab</title>${styleLinks}<style>body{font:14px system-ui,sans-serif;margin:16px;color:#202638}main{max-width:600px;margin:auto}button{padding:8px 12px;cursor:pointer}.tag{font-size:11px;color:#62708a}</style></head><body><main><p class="tag">ISOLATED INTEGRATION PREVIEW</p><h3>${item.name.replace(/[<>]/g,'')}</h3><p>External resources are loaded only inside this sandbox.</p>${sample}<p id="result" class="tag">Runtime check: waiting for scripts…</p></main>${scriptTags}${initScript}<script>window.addEventListener('load',()=>{const globals=['htmx','Alpine','Vue','PetiteVue','Turbo','Stimulus','p5','THREE'];document.getElementById('result').textContent='Sandbox loaded. Available globals: '+globals.filter(k=>window[k]).join(', ');parent.postMessage({kind:'integration-loaded'},'*')})<\/script></body></html>`;
+  }
+  function loadIntegration() {
+    const item=integrationCatalog[Number($('integrationSelect').value)];if(!item)return;
+    const frame=$('integrationFrame');const note=$('integrationNote');
+    if(item.note&&!item.script&&!item.css&&!item.parent){note.textContent=t('integrationUnavailable')+' '+item.note;frame.srcdoc='<!doctype html><html><body style="font:14px system-ui;padding:18px;color:#334">No runnable browser preview is configured for this catalog item.</body></html>';return;}
+    const html=sandboxDocument(item);if(!html){note.textContent=t('integrationUnavailable')+(item.note?' '+item.note:'');return;}
+    note.textContent=`${item.name} · ${item.group}. Loading in sandbox…`;frame.srcdoc=html;
+  }
+  window.addEventListener('message',event=>{if(event.source!==$('integrationFrame').contentWindow)return;if(event.data?.kind==='integration-loaded')$('integrationNote').textContent=t('integrationLoaded');if(event.data?.kind==='integration-error')$('integrationNote').textContent=t('integrationError');});
+
+  function bindEvents() {
+    $('language').addEventListener('change',e=>{state.language=e.target.value;applyLanguage();});
+    $('theme').addEventListener('change',e=>applyTheme(e.target.value));
+    $('chooseFiles').addEventListener('click',()=>$('fileInput').click());$('fileInput').addEventListener('change',e=>{addFiles(e.target.files);e.target.value='';});
+    const dz=$('dropZone');dz.addEventListener('click',()=>$('fileInput').click());dz.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();$('fileInput').click();}});
+    ['dragenter','dragover'].forEach(type=>dz.addEventListener(type,e=>{e.preventDefault();dz.classList.add('drag');}));['dragleave','drop'].forEach(type=>dz.addEventListener(type,e=>{e.preventDefault();dz.classList.remove('drag');}));dz.addEventListener('drop',e=>addFiles(e.dataTransfer?.files));
+    $('openCamera').addEventListener('click',startCamera);$('closeCamera').addEventListener('click',()=>{$('cameraDialog').close();stopCamera();});$('cameraDialog').addEventListener('close',stopCamera);
+    $('switchCamera').addEventListener('click',()=>{state.cameraFacing=state.cameraFacing==='environment'?'user':'environment';startCamera();});$('captureFrame').addEventListener('click',capturePhoto);
+    $('autoDetect').addEventListener('click',autoDetectSelected);$('rotateLeft').addEventListener('click',()=>rotateSelected(-90));$('rotateRight').addEventListener('click',()=>rotateSelected(90));
+    [['cropLeft','left'],['cropRight','right'],['cropTop','top'],['cropBottom','bottom']].forEach(([id,key])=>$(id).addEventListener('input',e=>{const p=selectedPage();if(!p)return;p.crop[key]=Number(e.target.value);$(`${id}Out`).textContent=`${e.target.value}%`;clearPdfOnEdit();renderPreview();renderPages();}));
+    [['brightness','brightness'],['contrast','contrast'],['grayscale','grayscale'],['saturation','saturation']].forEach(([id,key])=>$(id).addEventListener('input',e=>{const p=selectedPage();if(!p)return;p[key]=Number(e.target.value);$(`${id}Out`).textContent=`${e.target.value}%`;clearPdfOnEdit();renderPreview();renderPages();}));
+    [['scanMode','scanMode'],['noiseReduction','noiseReduction'],['sharpen','sharpen']].forEach(([id,key])=>$(id).addEventListener('change',e=>{const p=selectedPage();if(!p)return;p[key]=key==='scanMode'?e.target.value:Number(e.target.value);clearPdfOnEdit();renderPreview();renderPages();}));
+    $('resetEdits').addEventListener('click',()=>{const p=selectedPage();if(!p)return;p.crop={left:0,right:0,top:0,bottom:0};p.brightness=100;p.contrast=110;p.grayscale=0;p.saturation=100;p.scanMode='color';p.noiseReduction=0;p.sharpen=0;clearPdfOnEdit();updateUI();});$('removePage').addEventListener('click',()=>{if(state.selectedId)removePage(state.selectedId);});
+    $('paperSize').addEventListener('change',e=>$('customSize').hidden=e.target.value!=='custom');$('generatePdf').addEventListener('click',generatePdf);$('downloadPdf').addEventListener('click',downloadPdf);$('batchExport').addEventListener('click',generateBatchZip);
+    $('clearDocument').addEventListener('click',()=>{state.pages=[];state.selectedId=null;revokePdf();updateUI();setStatus(t('cleared'));});$('fitPreview').addEventListener('click',renderPreview);
+    $('helpButton').addEventListener('click',()=>alert(t('help')));$('loadIntegration').addEventListener('click',loadIntegration);
+    document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('cameraDialog').open){$('cameraDialog').close();stopCamera();}if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='o'){e.preventDefault();$('fileInput').click();}});
+    window.addEventListener('beforeunload',()=>{stopCamera();if(state.pdfUrl)URL.revokeObjectURL(state.pdfUrl);});
+  }
+
+  function init() {
+    try{const saved=localStorage.getItem('doctake-theme');if(['system','light','dark'].includes(saved))$('theme').value=saved; }catch(_){}
+    applyTheme($('theme').value);state.language=$('language').value;initIntegrationSelect();bindEvents();applyLanguage();updateUI();
+    if(!window.isSecureContext){$('openCamera').title='Camera requires HTTPS or localhost';}
+  }
+  init();
+})();
+</script>
+</body>
+</html>
